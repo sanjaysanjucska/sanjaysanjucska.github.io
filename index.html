@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyffer — Cyber Security for Small Business Websites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05070c;
+    --navy-deep:#0a1628;
+    --navy:#0f2847;
+    --navy-light:#16345c;
+    --accent:#4c8dff;
+    --accent-glow:#7eb2ff;
+    --ok:#3ddc84;
+    --warn:#ff6b6b;
+    --text:#e7ecf5;
+    --text-muted:#8fa1bd;
+    --border:rgba(126,178,255,0.14);
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img,svg{display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  /* Background texture */
+  body::before{
+    content:'';
+    position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse 800px 500px at 15% -10%, rgba(76,141,255,0.14), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(22,52,92,0.35), transparent 55%),
+      linear-gradient(180deg, #05070c 0%, #060a12 100%);
+    z-index:-2;
+  }
+  body::after{
+    content:'';
+    position:fixed;inset:0;
+    background-image:
+      linear-gradient(rgba(126,178,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(126,178,255,0.035) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse 900px 700px at 20% 0%, black, transparent 70%);
+    z-index:-1;
+  }
+
+  /* NAV */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(5,7,12,0.78);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 32px;max-width:1180px;margin:0 auto;
+  }
+  .logo{
+    font-family:var(--font-display);font-weight:700;font-size:1.35rem;
+    letter-spacing:0.02em;
+    display:flex;align-items:center;gap:9px;
+  }
+  .logo .dot{
+    width:9px;height:9px;border-radius:2px;background:var(--accent);
+    box-shadow:0 0 12px var(--accent-glow);
+  }
+  .logo span.suffix{color:var(--accent-glow);}
+  .nav-links{display:flex;gap:36px;font-size:0.93rem;color:var(--text-muted);}
+  .nav-links a{transition:color .2s;position:relative;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    font-family:var(--font-mono);font-size:0.82rem;font-weight:500;
+    padding:10px 18px;border:1px solid var(--accent);border-radius:4px;
+    color:var(--accent-glow);transition:all .2s;white-space:nowrap;
+  }
+  .nav-cta:hover{background:var(--accent);color:#03070f;}
+  .menu-toggle{display:none;}
+
+  /* HERO */
+  .hero{padding:88px 0 70px;position:relative;}
+  .hero-grid{
+    display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;
+  }
+  .eyebrow{
+    font-family:var(--font-mono);font-size:0.8rem;color:var(--accent-glow);
+    display:flex;align-items:center;gap:10px;margin-bottom:22px;letter-spacing:0.03em;
+  }
+  .eyebrow::before{content:'●';color:var(--ok);font-size:0.6rem;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  h1{
+    font-family:var(--font-display);font-weight:700;
+    font-size:3.15rem;line-height:1.08;letter-spacing:-0.01em;
+    margin-bottom:22px;
+  }
+  h1 .hl{color:var(--accent-glow);}
+  .hero p.sub{
+    font-size:1.08rem;color:var(--text-muted);max-width:490px;margin-bottom:34px;
+  }
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:38px;}
+  .btn-primary{
+    background:var(--accent);color:#03070f;font-weight:600;font-size:0.95rem;
+    padding:14px 26px;border-radius:5px;display:inline-flex;align-items:center;gap:8px;
+    box-shadow:0 0 0 rgba(76,141,255,0);transition:box-shadow .25s, transform .2s;
+  }
+  .btn-primary:hover{box-shadow:0 8px 30px rgba(76,141,255,0.35);transform:translateY(-1px);}
+  .btn-ghost{
+    border:1px solid var(--border);color:var(--text);font-weight:500;font-size:0.95rem;
+    padding:14px 26px;border-radius:5px;transition:border-color .2s, background .2s;
+  }
+  .btn-ghost:hover{border-color:var(--accent);background:rgba(76,141,255,0.06);}
+  .hero-note{font-size:0.85rem;color:var(--text-muted);font-family:var(--font-mono);}
+  .hero-note strong{color:var(--text);font-weight:500;}
+
+  /* TERMINAL SIGNATURE ELEMENT */
+  .terminal{
+    background:linear-gradient(180deg, var(--navy-deep), #060d18);
+    border:1px solid var(--border);
+    border-radius:10px;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(76,141,255,0.05) inset;
+    overflow:hidden;
+    position:relative;
+  }
+  .terminal::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+    opacity:0.6;
+  }
+  .term-bar{
+    display:flex;align-items:center;gap:8px;padding:13px 16px;
+    background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border);
+  }
+  .term-dot{width:10px;height:10px;border-radius:50%;}
+  .term-dot.r{background:#ff5f57;} .term-dot.y{background:#febc2e;} .term-dot.g{background:#28c840;}
+  .term-title{
+    margin-left:8px;font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);
+  }
+  .term-body{
+    padding:22px 20px;font-family:var(--font-mono);font-size:0.86rem;
+    min-height:290px;
+  }
+  .term-line{opacity:0;animation:fadeIn .4s forwards;margin-bottom:10px;display:flex;gap:10px;}
+  .term-line .prompt{color:var(--accent-glow);}
+  .term-line.ok{color:var(--text-muted);}
+  .term-line.ok .tag{color:var(--ok);}
+  .term-line.warn .tag{color:var(--warn);}
+  .term-line.warn{color:#d8c2c2;}
+  .term-line.result{color:var(--text);font-weight:600;border-top:1px solid var(--border);padding-top:14px;margin-top:6px;}
+  .cursor{display:inline-block;width:7px;height:14px;background:var(--accent-glow);animation:blink 1s step-end infinite;vertical-align:middle;}
+  @keyframes blink{50%{opacity:0;}}
+  @keyframes fadeIn{to{opacity:1;}}
+
+  /* TRUST STRIP */
+  .trust{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:34px 0;background:rgba(15,40,71,0.15);}
+  .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;}
+  .trust-item{font-size:0.9rem;color:var(--text-muted);}
+  .trust-item strong{display:block;color:var(--text);font-family:var(--font-display);font-size:1.02rem;margin-bottom:4px;font-weight:600;}
+
+  /* SECTION SHARED */
+  section{padding:96px 0;}
+  .section-head{max-width:640px;margin-bottom:56px;}
+  .section-eyebrow{
+    font-family:var(--font-mono);font-size:0.78rem;color:var(--accent-glow);
+    text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;
+  }
+  h2{
+    font-family:var(--font-display);font-weight:700;font-size:2.15rem;
+    letter-spacing:-0.01em;margin-bottom:16px;
+  }
+  .section-head p{color:var(--text-muted);font-size:1.02rem;}
+
+  /* PROBLEM */
+  .problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .problem-card{
+    background:var(--navy-deep);border:1px solid var(--border);border-radius:10px;
+    padding:26px 24px;transition:border-color .2s, transform .2s;
+  }
+  .problem-card:hover{border-color:rgba(255,107,107,0.4);transform:translateY(-3px);}
+  .problem-card .icon{font-size:1.5rem;margin-bottom:14px;}
+  .problem-card h3{font-family:var(--font-display);font-size:1.05rem;margin-bottom:8px;font-weight:600;}
+  .problem-card p{color:var(--text-muted);font-size:0.92rem;}
+
+  /* SERVICES */
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .service-card{
+    background:linear-gradient(180deg, rgba(15,40,71,0.35), rgba(10,22,40,0.2));
+    border:1px solid var(--border);border-radius:12px;padding:28px 24px;
+    position:relative;transition:border-color .25s, transform .25s;
+  }
+  .service-card:hover{border-color:var(--accent);transform:translateY(-4px);}
+  .service-card .badge{
+    position:absolute;top:-10px;right:20px;background:var(--accent);color:#03070f;
+    font-family:var(--font-mono);font-size:0.68rem;font-weight:600;padding:4px 10px;
+    border-radius:20px;letter-spacing:0.03em;
+  }
+  .service-num{font-family:var(--font-mono);color:var(--accent-glow);font-size:0.78rem;margin-bottom:14px;}
+  .service-card h3{font-family:var(--font-display);font-size:1.15rem;margin-bottom:10px;font-weight:600;}
+  .service-card p{color:var(--text-muted);font-size:0.9rem;}
+
+  /* PRICING */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;}
+  .price-card{
+    background:var(--navy-deep);border:1px solid var(--border);border-radius:14px;
+    padding:34px 28px;display:flex;flex-direction:column;
+  }
+  .price-card.featured{
+    border-color:var(--accent);
+    background:linear-gradient(180deg, rgba(76,141,255,0.09), rgba(15,40,71,0.4));
+    box-shadow:0 20px 60px -25px rgba(76,141,255,0.4);
+    position:relative;
+  }
+  .price-card.featured::before{
+    content:'MOST CHOSEN';position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+    background:var(--accent);color:#03070f;font-family:var(--font-mono);font-size:0.68rem;
+    font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:0.05em;
+  }
+  .price-tier{font-family:var(--font-mono);color:var(--text-muted);font-size:0.85rem;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;}
+  .price-name{font-family:var(--font-display);font-size:1.3rem;font-weight:600;margin-bottom:18px;}
+  .price-amount{font-family:var(--font-display);font-size:2.3rem;font-weight:700;margin-bottom:2px;}
+  .price-amount span{font-size:1rem;color:var(--text-muted);font-weight:400;font-family:var(--font-body);}
+  .price-period{color:var(--text-muted);font-size:0.85rem;margin-bottom:24px;}
+  .price-features{flex:1;margin-bottom:26px;}
+  .price-features li{
+    padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.9rem;
+    color:var(--text-muted);display:flex;gap:10px;
+  }
+  .price-features li::before{content:'✓';color:var(--ok);font-weight:700;}
+  .price-btn{
+    text-align:center;padding:13px;border-radius:6px;font-weight:600;font-size:0.9rem;
+    border:1px solid var(--border);transition:all .2s;
+  }
+  .price-card.featured .price-btn{background:var(--accent);color:#03070f;border-color:var(--accent);}
+  .price-btn:hover{border-color:var(--accent);}
+  .price-note{text-align:center;color:var(--text-muted);font-size:0.85rem;margin-top:30px;font-family:var(--font-mono);}
+
+  /* CONTACT CTA */
+  .contact-cta{
+    background:linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+    border:1px solid var(--border);border-radius:18px;
+    padding:56px 48px;display:flex;justify-content:space-between;align-items:center;gap:40px;
+    flex-wrap:wrap;
+  }
+  .contact-cta h2{margin-bottom:10px;}
+  .contact-cta p{color:var(--text-muted);}
+  .contact-links{display:flex;flex-direction:column;gap:12px;}
+  .contact-links a{
+    font-family:var(--font-mono);font-size:0.98rem;display:flex;align-items:center;gap:10px;
+    padding:12px 20px;background:rgba(255,255,255,0.03);border:1px solid var(--border);
+    border-radius:8px;transition:border-color .2s, background .2s;
+  }
+  .contact-links a:hover{border-color:var(--accent);background:rgba(76,141,255,0.08);}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);padding:40px 0;}
+  .footer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .footer-row .logo{font-size:1.1rem;}
+  footer .fmeta{color:var(--text-muted);font-size:0.85rem;font-family:var(--font-mono);}
+  footer .fmeta a:hover{color:var(--accent-glow);}
+
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;}
+    .trust-grid{grid-template-columns:repeat(2,1fr);}
+    .problem-grid,.services-grid,.pricing-grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    h1{font-size:2.3rem;}
+    .contact-cta{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="logo"><span class="dot"></span>CYFFER<span class="suffix">.in</span></a>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="tel:+916379092219" class="nav-cta">$ get_free_scan</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">SECURING SMALL BUSINESS WEBSITES SINCE DAY ONE</div>
+      <h1>Your website is online.<br>Is it <span class="hl">locked?</span></h1>
+      <p class="sub">Cyffer finds the security gaps in your e-commerce or business website before someone else does — and fixes them, in plain language, at a price small businesses can actually afford.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-primary">Get a Free Security Scan →</a>
+        <a href="#services" class="btn-ghost">See what we check</a>
+      </div>
+      <div class="hero-note"><strong>No jargon. No 40-page PDFs.</strong> Just what's broken, and how we fix it.</div>
+    </div>
+
+    <div class="terminal">
+      <div class="term-bar">
+        <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+        <div class="term-title">cyffer-scan — yourstore.in</div>
+      </div>
+      <div class="term-body" id="termBody"></div>
+    </div>
+  </div>
+</section>
+
+<div class="trust">
+  <div class="wrap trust-grid">
+    <div class="trust-item"><strong>Free</strong>Initial vulnerability scan</div>
+    <div class="trust-item"><strong>Fixed</strong>Upfront pricing, no surprises</div>
+    <div class="trust-item"><strong>Plain-English</strong>Reports anyone can act on</div>
+    <div class="trust-item"><strong>India-based</strong>Support that speaks your language</div>
+  </div>
+</div>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">The problem</div>
+      <h2>Most small business websites are one weak plugin away from disaster</h2>
+      <p>You built your website to sell — not to defend against attackers. Here's what usually goes wrong.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="icon">🔓</div>
+        <h3>Exposed admin panels</h3>
+        <p>Default login pages sitting wide open at predictable URLs, with no rate-limiting or 2FA.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🧩</div>
+        <h3>Outdated plugins & CMS</h3>
+        <p>WordPress, WooCommerce and Shopify apps left unpatched for months, each a known entry point.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🕵️</div>
+        <h3>No one is watching</h3>
+        <p>Most owners find out they were breached from a customer complaint — weeks after it happened.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">What we do</div>
+      <h2>Cyber security services, built for real small businesses</h2>
+      <p>A short list of things done properly, instead of a long list of things done badly.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <h3>Vulnerability Assessment</h3>
+        <p>Automated scanning of your website, server and plugins to catch known, exploitable weaknesses.</p>
+      </div>
+      <div class="service-card">
+        <span class="badge">MOST REQUESTED</span>
+        <div class="service-num">02</div>
+        <h3>Manual Penetration Testing</h3>
+        <p>A real person attempts to break into your website the way an attacker would — beyond what automated scanners can find.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <h3>Security Hardening</h3>
+        <p>Fixing what we find: locking down admin panels, permissions, headers, and login protection.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <h3>Malware Removal & Cleanup</h3>
+        <p>Already hacked? We remove malicious code, close the entry point, and restore your site safely.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">05</div>
+        <h3>SSL & Server Security Setup</h3>
+        <p>Correctly configured SSL, firewalls and server settings so the basics are never the weak link.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">06</div>
+        <h3>Ongoing Monitoring</h3>
+        <p>Monthly re-scans and alerts, so new vulnerabilities get caught before they get used.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Pricing</div>
+      <h2>Simple plans, honest pricing</h2>
+      <p>All prices in INR. Pick a one-time check-up, or ongoing protection.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">One-time</div>
+        <div class="price-name">Starter Scan</div>
+        <div class="price-amount">₹2,999</div>
+        <div class="price-period">one-time payment</div>
+        <ul class="price-features">
+          <li>Automated vulnerability scan</li>
+          <li>Plain-English report</li>
+          <li>Risk severity ranking</li>
+          <li>Delivered within 48 hours</li>
+        </ul>
+        <a href="#contact" class="price-btn">Choose Starter</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-tier">One-time</div>
+        <div class="price-name">Growth Shield</div>
+        <div class="price-amount">₹9,999<span> onwards</span></div>
+        <div class="price-period">one-time payment</div>
+        <ul class="price-features">
+          <li>Everything in Starter Scan</li>
+          <li>Manual penetration testing</li>
+          <li>Security hardening & fixes</li>
+          <li>SSL & server configuration check</li>
+          <li>Free re-test after fixes</li>
+        </ul>
+        <a href="#contact" class="price-btn">Choose Growth Shield</a>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Monthly</div>
+        <div class="price-name">Guardian Plan</div>
+        <div class="price-amount">₹4,999<span>/mo</span></div>
+        <div class="price-period">billed monthly</div>
+        <ul class="price-features">
+          <li>Monthly vulnerability scans</li>
+          <li>Continuous monitoring</li>
+          <li>Priority support</li>
+          <li>Quarterly manual test included</li>
+        </ul>
+        <a href="#contact" class="price-btn">Choose Guardian</a>
+      </div>
+    </div>
+    <div class="price-note">Custom scope? Larger store or multiple sites? Write to us for a tailored quote.</div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-cta">
+      <div>
+        <h2>Not sure where to start?</h2>
+        <p>Tell us your website URL — we'll point out what to look at first, free of charge.</p>
+      </div>
+      <div class="contact-links">
+        <a href="tel:+916379092219">📞 +91 63790 92219</a>
+        <a href="mailto:sanjay@cyffer.in">✉️ sanjay@cyffer.in</a>
+        <a href="https://cyffer.in">🌐 cyffer.in</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <a href="#" class="logo"><span class="dot"></span>CYFFER<span class="suffix">.in</span></a>
+    <div class="fmeta">© 2026 Cyffer. Affordable cyber security for small business websites. · <a href="mailto:sanjay@cyffer.in">sanjay@cyffer.in</a></div>
+  </div>
+</footer>
+
+<script>
+  const lines = [
+    {type:'prompt', html:'<span class="prompt">$</span> cyffer scan yourstore.in'},
+    {type:'ok', html:'<span class="tag">[✓]</span> SSL certificate .......... valid'},
+    {type:'warn', html:'<span class="tag">[✗]</span> Admin panel exposed ..... found at /wp-admin'},
+    {type:'warn', html:'<span class="tag">[✗]</span> Outdated plugin ......... WooCommerce 4.2 (known CVE)'},
+    {type:'ok', html:'<span class="tag">[✓]</span> Firewall ................ active'},
+    {type:'warn', html:'<span class="tag">[!]</span> Login protection ........ weak, no rate-limit'},
+    {type:'result', html:'3 issues found — request your free full report ↓'}
+  ];
+  const term = document.getElementById('termBody');
+  let i = 0;
+  function typeNext(){
+    if(i >= lines.length){
+      const c = document.createElement('span');
+      c.className='cursor';
+      term.appendChild(c);
+      return;
+    }
+    const l = lines[i];
+    const div = document.createElement('div');
+    div.className = 'term-line ' + l.type;
+    div.style.animationDelay = '0s';
+    div.innerHTML = l.html;
+    term.appendChild(div);
+    i++;
+    setTimeout(typeNext, i===1 ? 500 : 650);
+  }
+  typeNext();
+</script>
+
+</body>
+</html>
